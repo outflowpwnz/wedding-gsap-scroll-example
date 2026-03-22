@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Свадьба Александра и Анны</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -501,11 +501,11 @@
       will-change: transform;
     }
     #orn-band-top {
-      top: 0;
+      top: env(safe-area-inset-top, 0px);
       transform: translate3d(-101%,0,0);
     }
     #orn-band-bot {
-      bottom: 0;
+      bottom: env(safe-area-inset-bottom, 0px);
       transform: translate3d(101%,0,0);
       background-position-x: right;
     }

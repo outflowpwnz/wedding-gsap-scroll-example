@@ -817,9 +817,12 @@
   var currentFrame = 0;
   var currentCircleR = 0;
   var cachedMedR   = 0; /* cached once on resize, not recalculated per scroll tick */
+  var imgDW = 0, imgDH = 0, imgDX = 0, imgDY = 0; /* cached draw rect for frames, updated on resize */
 
   var canvas      = document.getElementById('frame-canvas');
   var ctx         = canvas.getContext('2d', { alpha: false }); /* opaque — faster compositing on iOS */
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'low'; /* fastest interpolation; 720→312 downscale still looks fine */
   var overlay     = document.getElementById('load-overlay');
   var bar         = document.getElementById('load-bar');
   var pctEl       = document.getElementById('load-pct');
@@ -832,25 +835,25 @@
 
   function render() {
     var cw = canvas.width, ch = canvas.height;
+    var cx = cw / 2, cy = ch / 2;
     var circleR = Math.min(currentCircleR, cachedMedR);
 
     /* 1. Fill entire canvas with cream (canvas is opaque, no clearRect needed) */
     ctx.fillStyle = '#FBF5EC';
     ctx.fillRect(0, 0, cw, ch);
 
-    /* 2. Clip to the medallion circle, draw video frame only within it.
-          This avoids drawing the full image + masking — GPU only processes circle pixels. */
     var img = frames[currentFrame];
-    if (img && circleR > 0) {
-      ctx.save();
+    if (img && circleR > 1) {
+      /* 2. Draw full frame — dimensions cached in syncCanvasSize, no per-frame scale calc */
+      ctx.drawImage(img, imgDX, imgDY, imgDW, imgDH);
+
+      /* 3. Overdraw cream outside the circle via even-odd path.
+            Avoids ctx.clip() which forces software stencil compositing on iOS Safari. */
       ctx.beginPath();
-      ctx.arc(cw / 2, ch / 2, circleR, 0, Math.PI * 2);
-      ctx.clip();
-      var scale = Math.max(cachedMedR * 2 / img.naturalWidth, cachedMedR * 2 / img.naturalHeight);
-      var w = img.naturalWidth  * scale;
-      var h = img.naturalHeight * scale;
-      ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
-      ctx.restore();
+      ctx.rect(0, 0, cw, ch);
+      ctx.arc(cx, cy, circleR, 0, Math.PI * 2);
+      ctx.fillStyle = '#FBF5EC';
+      ctx.fill('evenodd');
     }
   }
 
@@ -866,6 +869,15 @@
     canvas.width  = canvas.offsetWidth  * dpr;
     canvas.height = canvas.offsetHeight * dpr;
     cachedMedR    = Math.min(canvas.width, canvas.height) * 0.40;
+    /* Pre-compute image draw rect once per resize — avoids scale calc on every render tick */
+    var ref = frames[0];
+    if (ref) {
+      var scale = Math.max(cachedMedR * 2 / ref.naturalWidth, cachedMedR * 2 / ref.naturalHeight);
+      imgDW = ref.naturalWidth  * scale;
+      imgDH = ref.naturalHeight * scale;
+      imgDX = (canvas.width  - imgDW) / 2;
+      imgDY = (canvas.height - imgDH) / 2;
+    }
     render();
   }
 

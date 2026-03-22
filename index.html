@@ -502,11 +502,11 @@
     }
     #orn-band-top {
       top: 0;
-      transform: translateX(-101%);
+      transform: translate3d(-101%,0,0);
     }
     #orn-band-bot {
       bottom: 0;
-      transform: translateX(101%);
+      transform: translate3d(101%,0,0);
       background-position-x: right;
     }
 
@@ -555,38 +555,48 @@
     }
 
     #load-overlay {
-      position: absolute;
+      position: fixed;
       inset: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: rgba(44, 24, 16, 0.97);
-      z-index: 10;
-      transition: opacity 0.5s ease;
+      background: var(--red);
+      z-index: 1000;
+      transition: none;
     }
 
     #load-bar-wrap {
-      width: 180px;
-      height: 2px;
-      background: rgba(255,255,255,0.12);
-      margin-bottom: 14px;
+      width: 220px;
+      height: 3px;
+      background: rgba(251,245,236,0.2);
       overflow: hidden;
+      border-radius: 2px;
     }
 
     #load-bar {
       height: 100%;
       width: 0%;
-      background: var(--gold);
+      background: var(--cream);
       transition: width 0.08s linear;
+      border-radius: 2px;
     }
 
     #load-label {
       font-family: 'Philosopher', serif;
-      font-size: 12px;
+      font-size: 15px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--cream);
+      margin-bottom: 16px;
+    }
+
+    #load-pct {
+      font-family: 'Philosopher', serif;
+      font-size: 13px;
       letter-spacing: 3px;
-      color: var(--light);
-      opacity: 0.7;
+      color: var(--cream);
+      margin-top: 12px;
     }
 
     /* ── ANIMATIONS ── */
@@ -623,10 +633,11 @@
   <!-- CANVAS SCROLL ANIMATION -->
   <section class="canvas-scene">
     <div id="load-overlay">
+      <p id="load-label">Загрузка</p>
       <div id="load-bar-wrap">
         <div id="load-bar"></div>
       </div>
-      <p id="load-label">Загрузка…</p>
+      <p id="load-pct">0%</p>
     </div>
     <canvas id="frame-canvas"></canvas>
 
@@ -809,7 +820,7 @@
   var ctx         = canvas.getContext('2d');
   var overlay     = document.getElementById('load-overlay');
   var bar         = document.getElementById('load-bar');
-  var label       = document.getElementById('load-label');
+  var pctEl       = document.getElementById('load-pct');
   var textEl      = document.getElementById('scroll-text');
   var ornBandTop = document.getElementById('orn-band-top');
   var ornBandBot = document.getElementById('orn-band-bot');
@@ -859,6 +870,8 @@
   }
 
   /* ── Preload all 121 frames ── */
+  document.body.style.overflow = 'hidden';
+
   var loaded = 0;
 
   var promises = Array.from({ length: FRAME_COUNT }, function (_, i) {
@@ -869,16 +882,17 @@
       img.onload = img.onerror = function () {
         if (img.complete && img.naturalWidth) frames[i] = img;
         loaded++;
-        bar.style.width = (loaded / FRAME_COUNT * 100).toFixed(1) + '%';
-        label.textContent = loaded + ' / ' + FRAME_COUNT;
+        var pct = Math.round(loaded / FRAME_COUNT * 100);
+        bar.style.width = pct + '%';
+        pctEl.textContent = pct + '%';
         resolve();
       };
     });
   });
 
   Promise.all(promises).then(function () {
-    overlay.style.opacity = '0';
-    setTimeout(function () { overlay.style.display = 'none'; }, 500);
+    overlay.style.display = 'none';
+    document.body.style.overflow = '';
 
     syncCanvasSize();
 
@@ -903,8 +917,8 @@
 
         /* Ornamental bands slide in from sides with the circle */
         var bandT = invlerp(0.25, 0.58, p);
-        ornBandTop.style.transform = 'translateX(' + ((bandT - 1) * 101) + '%)';
-        ornBandBot.style.transform = 'translateX(' + ((1 - bandT) * 101) + '%)';
+        ornBandTop.style.transform = 'translate3d(' + ((bandT - 1) * 101) + '%,0,0)';
+        ornBandBot.style.transform = 'translate3d(' + ((1 - bandT) * 101) + '%,0,0)';
 
         /* Frames progress from 0.35 → 1.0                */
         var frameT   = invlerp(0.35, 1.0, p);

@@ -34,11 +34,6 @@
 
     body {
       background: var(--cream);
-      background-image:
-        radial-gradient(circle, rgba(139,26,26,0.04) 1px, transparent 1px),
-        radial-gradient(circle, rgba(196,136,42,0.03) 1px, transparent 1px);
-      background-size: 18px 18px, 9px 9px;
-      background-position: 0 0, 9px 9px;
       min-height: 100vh;
       font-family: 'PT Serif', serif;
       color: var(--dark);
@@ -479,11 +474,6 @@
       width: 100%;
       height: 100svh;
       background: var(--cream);
-      background-image:
-        radial-gradient(circle, rgba(139,26,26,0.04) 1px, transparent 1px),
-        radial-gradient(circle, rgba(196,136,42,0.03) 1px, transparent 1px);
-      background-size: 18px 18px, 9px 9px;
-      background-position: 0 0, 9px 9px;
       overflow: hidden;
     }
 
@@ -791,6 +781,7 @@
   var currentCircleR = 0;
   var cachedMedR   = 0; /* cached once on resize, not recalculated per scroll tick */
   var imgDW = 0, imgDH = 0, imgDX = 0, imgDY = 0; /* cached draw rect for frames, updated on resize */
+  var bitmaps = new Array(FRAME_COUNT); /* pre-scaled canvases at display resolution */
 
   var canvas      = document.getElementById('frame-canvas');
   var ctx         = canvas.getContext('2d', { alpha: false }); /* opaque — faster compositing on iOS */
@@ -813,10 +804,10 @@
     ctx.fillStyle = '#FBF5EC';
     ctx.fillRect(0, 0, cw, ch);
 
-    var img = frames[currentFrame];
-    if (img && circleR > 1) {
-      /* 2. Draw full frame — dimensions cached in syncCanvasSize, no per-frame scale calc */
-      ctx.drawImage(img, imgDX, imgDY, imgDW, imgDH);
+    var src = bitmaps[currentFrame] || frames[currentFrame];
+    if (src && circleR > 1) {
+      /* 2. Draw pre-scaled frame — bitmaps[] is already at display size, so this is a 1:1 blit */
+      ctx.drawImage(src, imgDX, imgDY, imgDW, imgDH);
 
       /* 3. Overdraw cream outside the circle via even-odd path.
             Avoids ctx.clip() which forces software stencil compositing on iOS Safari. */
@@ -849,6 +840,21 @@
       imgDY = (canvas.height - imgDH) / 2;
     }
     render();
+  }
+
+  /* Pre-scale all frames to display resolution so drawImage is a 1:1 blit — no per-frame GPU rescale.
+     Reduces decoded memory from 121×720²×4≈251MB to 121×display²×4≈47MB on a typical iPhone. */
+  function prescaleFrames() {
+    var fw = Math.round(imgDW), fh = Math.round(imgDH);
+    if (!fw || !fh) return;
+    for (var i = 0; i < FRAME_COUNT; i++) {
+      var img = frames[i];
+      if (!img) continue;
+      var oc = document.createElement('canvas');
+      oc.width = fw; oc.height = fh;
+      oc.getContext('2d').drawImage(img, 0, 0, fw, fh);
+      bitmaps[i] = oc;
+    }
   }
 
   var rafPending = false;
@@ -889,15 +895,17 @@
     document.body.style.overflow = '';
 
     syncCanvasSize();
+    prescaleFrames(); /* pre-scale after syncCanvasSize sets imgDW/DH */
 
     var scene = document.querySelector('.canvas-scene');
 
     ScrollTrigger.create({
-      trigger : scene,
-      start   : 'top top',
-      end     : '+=' + (FRAME_COUNT * 20) + 'px',
-      pin     : true,
-      scrub   : true,
+      trigger      : scene,
+      start        : 'top top',
+      end          : '+=' + (FRAME_COUNT * 20) + 'px',
+      pin          : true,
+      anticipatePin: 1,
+      scrub        : true,
       onUpdate: function (self) {
         var p = self.progress;
 

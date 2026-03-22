@@ -863,10 +863,22 @@
     ctx.restore();
   }
 
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+
   function syncCanvasSize() {
-    canvas.width  = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-    render();
+    canvas.width  = canvas.offsetWidth  * dpr;
+    canvas.height = canvas.offsetHeight * dpr;
+    render(); /* ctx.scale не нужен — medallionR/render оперирует canvas.width/height напрямую */
+  }
+
+  var rafPending = false;
+  function scheduleRender() {
+    if (rafPending) return;
+    rafPending = true;
+    requestAnimationFrame(function () {
+      rafPending = false;
+      render();
+    });
   }
 
   /* ── Preload all 121 frames ── */
@@ -924,7 +936,7 @@
         var frameT   = invlerp(0.35, 1.0, p);
         currentFrame = Math.round(frameT * (FRAME_COUNT - 1));
 
-        render();
+        scheduleRender();
       }
     });
 

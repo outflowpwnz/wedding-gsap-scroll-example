@@ -393,6 +393,62 @@
     }
     .rsvp-btn:active { transform: scale(0.98); }
 
+    .field-error {
+      font-family: 'PT Serif', serif;
+      font-size: 12px;
+      color: #8B1A1A;
+      font-style: italic;
+      opacity: 0;
+      height: 0;
+      overflow: hidden;
+      transition: opacity 0.2s, height 0.2s;
+    }
+    .form-group.error .field-error {
+      opacity: 1;
+      height: 18px;
+    }
+    .form-group.error input,
+    .form-group.error select {
+      border-color: #8B1A1A;
+      box-shadow: 0 0 0 3px rgba(139,26,26,0.18);
+      animation: rsvp-shake 0.35s ease;
+    }
+    @keyframes rsvp-shake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-6px); }
+      40%      { transform: translateX(6px); }
+      60%      { transform: translateX(-4px); }
+      80%      { transform: translateX(4px); }
+    }
+
+    .rsvp-success {
+      display: none;
+      text-align: center;
+      padding: 32px 0 8px;
+      animation: fadeUp 0.6s ease both;
+    }
+    .rsvp-success-icon {
+      font-size: 36px;
+      color: var(--gold);
+      margin-bottom: 16px;
+      display: block;
+    }
+    .rsvp-success-title {
+      font-family: 'Reznovic', 'Philosopher', serif;
+      font-weight: 700;
+      font-size: 56px;
+      letter-spacing: 3px;
+      color: var(--red);
+      margin-bottom: 10px;
+    }
+    .rsvp-success-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--dark);
+    }
+
     /* ── CONTACTS ── */
     .contacts-intro {
       font-style: italic;
@@ -733,30 +789,38 @@
         Дабы знали мы, кому хлеб-соль<br/>да место за столом готовить
       </p>
 
-      <form class="rsvp-form" onsubmit="return false;">
-        <div class="form-group">
+      <form class="rsvp-form" id="rsvpForm" novalidate>
+        <div class="form-group" id="fg-name">
           <label>Ваше имя</label>
-          <input type="text" placeholder="Имя и фамилия" />
+          <input type="text" id="rsvp-name" placeholder="Имя и фамилия" />
+          <span class="field-error">Пожалуйста, укажите ваше имя</span>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" id="fg-attendance">
           <label>Присутствие</label>
           <div class="select-wrap">
-            <select>
+            <select id="rsvp-attendance">
               <option value="">— выберите —</option>
               <option value="yes">Приду</option>
               <option value="no">Не смогу прийти</option>
             </select>
           </div>
+          <span class="field-error">Пожалуйста, выберите вариант</span>
         </div>
 
         <div class="form-group">
           <label>Спутник (необязательно)</label>
-          <input type="text" placeholder="Имя спутника" />
+          <input type="text" id="rsvp-companion" placeholder="Имя спутника" />
         </div>
 
         <button type="submit" class="rsvp-btn">✦ Отозваться ✦</button>
       </form>
+
+      <div class="rsvp-success" id="rsvpSuccess">
+        <span class="rsvp-success-icon">❦</span>
+        <p class="rsvp-success-title">Благодарим!</p>
+        <p class="rsvp-success-text">Ваш отклик получен.<br/>Ждём вас с радостью!</p>
+      </div>
     </div>
   </section>
 
@@ -956,6 +1020,39 @@
     });
 
     new ResizeObserver(syncCanvasSize).observe(canvas);
+  });
+}());
+
+// ── RSVP form validation ──
+(function () {
+  var form       = document.getElementById('rsvpForm');
+  var nameInput  = document.getElementById('rsvp-name');
+  var attendance = document.getElementById('rsvp-attendance');
+  var fgName     = document.getElementById('fg-name');
+  var fgAtt      = document.getElementById('fg-attendance');
+  var success    = document.getElementById('rsvpSuccess');
+
+  function validate(input, group) {
+    var ok = input.value.trim() !== '';
+    group.classList.toggle('error', !ok);
+    return ok;
+  }
+
+  // Clear error on interaction
+  nameInput.addEventListener('input', function () { fgName.classList.remove('error'); });
+  attendance.addEventListener('change', function () { fgAtt.classList.remove('error'); });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var validName = validate(nameInput, fgName);
+    var validAtt  = validate(attendance, fgAtt);
+    if (!validName || !validAtt) {
+      (!validName ? nameInput : attendance).focus();
+      return;
+    }
+    // Success
+    form.style.display = 'none';
+    success.style.display = 'block';
   });
 }());
 </script>

@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet">
+<defs>
+  <!-- BIRD (facing right, tail at origin) -->
+  <g id="bird">
+    <path d="M-8,10 Q-30,-18 -50,-48 Q-28,-16 -8,10Z" fill="#FBF5EC"/>
+    <path d="M-10,12 Q-36,-6 -62,-30 Q-34,-4 -10,12Z" fill="#FBF5EC"/>
+    <path d="M-12,14 Q-40,5 -68,-8 Q-40,9 -12,14Z" fill="#FBF5EC"/>
+    <path d="M-12,16 Q-42,18 -68,14 Q-42,22 -12,16Z" fill="#FBF5EC"/>
+    <path d="M-10,20 Q-36,30 -58,44 Q-34,30 -10,20Z" fill="#FBF5EC"/>
+    <circle cx="-50" cy="-48" r="5.5" fill="#C4882A"/>
+    <circle cx="-61" cy="-30" r="5.5" fill="#C4882A"/>
+    <circle cx="-67" cy="-8"  r="5.5" fill="#C4882A"/>
+    <circle cx="-67" cy="14"  r="5.5" fill="#C4882A"/>
+    <circle cx="-57" cy="44"  r="5.5" fill="#C4882A"/>
+    <ellipse cx="12" cy="12" rx="42" ry="28" fill="#FBF5EC"/>
+    <path d="M-2,2 Q14,-16 40,-10 Q34,-2 -2,2Z" fill="#C4882A"/>
+    <path d="M-4,9 Q10,-4 36,2 Q30,10 -4,9Z" fill="#C4882A" opacity="0.5"/>
+    <circle cx="50" cy="-8" r="20" fill="#FBF5EC"/>
+    <circle cx="57" cy="-12" r="6" fill="#8B1A1A"/>
+    <circle cx="59" cy="-14" r="2.5" fill="#FBF5EC"/>
+    <path d="M68,-8 L84,-3 L68,2Z" fill="#C4882A"/>
+    <path d="M40,-26 Q33,-52 38,-74 Q45,-52 40,-26Z" fill="#FBF5EC"/>
+    <path d="M48,-28 Q45,-56 52,-78 Q57,-56 48,-28Z" fill="#FBF5EC"/>
+    <path d="M55,-25 Q58,-50 66,-70 Q62,-50 55,-25Z" fill="#FBF5EC"/>
+    <circle cx="38" cy="-74" r="5" fill="#C4882A"/>
+    <circle cx="52" cy="-78" r="5" fill="#C4882A"/>
+    <circle cx="66" cy="-70" r="5" fill="#C4882A"/>
+    <line x1="18" y1="40" x2="12" y2="54" stroke="#FBF5EC" stroke-width="3" stroke-linecap="round"/>
+    <line x1="12" y1="54" x2="2"  y2="64" stroke="#FBF5EC" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="12" y1="54" x2="13" y2="66" stroke="#FBF5EC" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="12" y1="54" x2="24" y2="64" stroke="#FBF5EC" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="28" y1="38" x2="24" y2="54" stroke="#FBF5EC" stroke-width="3" stroke-linecap="round"/>
+    <line x1="24" y1="54" x2="14" y2="64" stroke="#FBF5EC" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="24" y1="54" x2="25" y2="66" stroke="#FBF5EC" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="24" y1="54" x2="36" y2="64" stroke="#FBF5EC" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- Large 8-petal flower -->
+  <g id="flower-lg">
+    <ellipse cx="0"   cy="-22" rx="9" ry="14" fill="#FBF5EC"/>
+    <ellipse cx="0"   cy="22"  rx="9" ry="14" fill="#FBF5EC"/>
+    <ellipse cx="-22" cy="0"   rx="14" ry="9" fill="#FBF5EC"/>
+    <ellipse cx="22"  cy="0"   rx="14" ry="9" fill="#FBF5EC"/>
+    <ellipse cx="-15" cy="-15" rx="9" ry="14" transform="rotate(-45,-15,-15)" fill="#FBF5EC"/>
+    <ellipse cx="15"  cy="-15" rx="9" ry="14" transform="rotate(45,15,-15)"   fill="#FBF5EC"/>
+    <ellipse cx="-15" cy="15"  rx="9" ry="14" transform="rotate(45,-15,15)"   fill="#FBF5EC"/>
+    <ellipse cx="15"  cy="15"  rx="9" ry="14" transform="rotate(-45,15,15)"   fill="#FBF5EC"/>
+    <circle cx="0" cy="0" r="14" fill="#C4882A"/>
+    <circle cx="0" cy="0" r="8"  fill="#8B1A1A"/>
+    <circle cx="0" cy="0" r="4"  fill="#C4882A"/>
+  </g>
+
+  <!-- Small 8-petal flower -->
+  <g id="flower-sm">
+    <ellipse cx="0"  cy="-12" rx="6" ry="9" fill="#FBF5EC"/>
+    <ellipse cx="0"  cy="12"  rx="6" ry="9" fill="#FBF5EC"/>
+    <ellipse cx="-12" cy="0"  rx="9" ry="6" fill="#FBF5EC"/>
+    <ellipse cx="12"  cy="0"  rx="9" ry="6" fill="#FBF5EC"/>
+    <ellipse cx="-8"  cy="-8" rx="6" ry="9" transform="rotate(-45,-8,-8)" fill="#FBF5EC"/>
+    <ellipse cx="8"   cy="-8" rx="6" ry="9" transform="rotate(45,8,-8)"   fill="#FBF5EC"/>
+    <ellipse cx="-8"  cy="8"  rx="6" ry="9" transform="rotate(45,-8,8)"   fill="#FBF5EC"/>
+    <ellipse cx="8"   cy="8"  rx="6" ry="9" transform="rotate(-45,8,8)"   fill="#FBF5EC"/>
+    <circle cx="0" cy="0" r="8" fill="#C4882A"/>
+    <circle cx="0" cy="0" r="4" fill="#8B1A1A"/>
+    <circle cx="0" cy="0" r="2" fill="#C4882A"/>
+  </g>
+
+  <!-- Leaf (base at 0,0 tip points up) -->
+  <g id="leaf">
+    <path d="M0,0 Q-9,-12 0,-28 Q9,-12 0,0Z" fill="#FBF5EC"/>
+    <line x1="0" y1="0" x2="0" y2="-28" stroke="#C4882A" stroke-width="1" opacity="0.5"/>
+  </g>
+</defs>
+
+<!-- ===== TOP BORDER ===== -->
+<line x1="0" y1="5" x2="800" y2="5" stroke="#FBF5EC" stroke-width="2.5"/>
+<polyline
+  points="0,5 16,22 32,5 48,22 64,5 80,22 96,5 112,22 128,5 144,22 160,5 176,22 192,5 208,22 224,5 240,22 256,5 272,22 288,5 304,22 320,5 336,22 352,5 368,22 384,5 400,22 416,5 432,22 448,5 464,22 480,5 496,22 512,5 528,22 544,5 560,22 576,5 592,22 608,5 624,22 640,5 656,22 672,5 688,22 704,5 720,22 736,5 752,22 768,5 784,22 800,5"
+  fill="none" stroke="#C4882A" stroke-width="2" stroke-linejoin="miter"/>
+<line x1="0" y1="22" x2="800" y2="22" stroke="#FBF5EC" stroke-width="1.5"/>
+
+<!-- ===== BOTTOM BORDER ===== -->
+<line x1="0" y1="178" x2="800" y2="178" stroke="#FBF5EC" stroke-width="1.5"/>
+<polyline
+  points="0,195 16,178 32,195 48,178 64,195 80,178 96,195 112,178 128,195 144,178 160,195 176,178 192,195 208,178 224,195 240,178 256,195 272,178 288,195 304,178 320,195 336,178 352,195 368,178 384,195 400,178 416,195 432,178 448,195 464,178 480,195 496,178 512,195 528,178 544,195 560,178 576,195 592,178 608,195 624,178 640,195 656,178 672,195 688,178 704,195 720,178 736,195 752,178 768,195 784,178 800,195"
+  fill="none" stroke="#C4882A" stroke-width="2" stroke-linejoin="miter"/>
+<line x1="0" y1="195" x2="800" y2="195" stroke="#FBF5EC" stroke-width="2.5"/>
+
+<!-- ===== LEFT BIRD ===== -->
+<g transform="translate(148,102)">
+  <use href="#bird"/>
+</g>
+
+<!-- ===== RIGHT BIRD (mirror) ===== -->
+<g transform="translate(652,102) scale(-1,1)">
+  <use href="#bird"/>
+</g>
+
+<!-- ===== LEFT VINE ===== -->
+<path d="M228,150 C268,136 328,152 400,148" stroke="#FBF5EC" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+<!-- Leaves -->
+<g transform="translate(258,144) rotate(0)"><use href="#leaf"/></g>
+<g transform="translate(258,148) rotate(180)"><use href="#leaf"/></g>
+<g transform="translate(310,148) rotate(-10)"><use href="#leaf"/></g>
+<g transform="translate(310,152) rotate(175)"><use href="#leaf"/></g>
+<g transform="translate(358,146) rotate(10)"><use href="#leaf"/></g>
+<g transform="translate(358,150) rotate(170)"><use href="#leaf"/></g>
+<!-- Flowers on vine -->
+<g transform="translate(284,132)"><use href="#flower-sm" transform="scale(0.65)"/></g>
+<g transform="translate(336,134)"><use href="#flower-sm" transform="scale(0.6)"/></g>
+
+<!-- ===== RIGHT VINE ===== -->
+<path d="M572,150 C532,136 472,152 400,148" stroke="#FBF5EC" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+<!-- Leaves -->
+<g transform="translate(542,144) rotate(0)"><use href="#leaf"/></g>
+<g transform="translate(542,148) rotate(180)"><use href="#leaf"/></g>
+<g transform="translate(490,148) rotate(10)"><use href="#leaf"/></g>
+<g transform="translate(490,152) rotate(185)"><use href="#leaf"/></g>
+<g transform="translate(442,146) rotate(-10)"><use href="#leaf"/></g>
+<g transform="translate(442,150) rotate(190)"><use href="#leaf"/></g>
+<!-- Flowers on vine -->
+<g transform="translate(516,132)"><use href="#flower-sm" transform="scale(0.65)"/></g>
+<g transform="translate(464,134)"><use href="#flower-sm" transform="scale(0.6)"/></g>
+
+<!-- ===== CENTRAL TREE OF LIFE ===== -->
+<!-- Main stem -->
+<line x1="400" y1="162" x2="400" y2="34" stroke="#FBF5EC" stroke-width="4" stroke-linecap="round"/>
+
+<!-- Upper branches + flowers -->
+<path d="M400,72 Q376,58 358,48" stroke="#FBF5EC" stroke-width="3" fill="none" stroke-linecap="round"/>
+<path d="M400,72 Q424,58 442,48" stroke="#FBF5EC" stroke-width="3" fill="none" stroke-linecap="round"/>
+<g transform="translate(356,46)"><use href="#flower-sm"/></g>
+<g transform="translate(444,46)"><use href="#flower-sm"/></g>
+
+<!-- Mid branches + leaves -->
+<path d="M400,106 Q370,90 348,80" stroke="#FBF5EC" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<path d="M400,106 Q430,90 452,80" stroke="#FBF5EC" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<g transform="translate(344,78) rotate(20)"><use href="#leaf"/></g>
+<g transform="translate(456,78) rotate(-20)"><use href="#leaf"/></g>
+
+<!-- Lower branches + small flowers -->
+<path d="M400,132 Q378,120 362,114" stroke="#FBF5EC" stroke-width="2" fill="none" stroke-linecap="round"/>
+<path d="M400,132 Q422,120 438,114" stroke="#FBF5EC" stroke-width="2" fill="none" stroke-linecap="round"/>
+<g transform="translate(360,112)"><use href="#flower-sm" transform="scale(0.6)"/></g>
+<g transform="translate(440,112)"><use href="#flower-sm" transform="scale(0.6)"/></g>
+
+<!-- Top large flower -->
+<g transform="translate(400,42)"><use href="#flower-lg"/></g>
+
+<!-- Base berries -->
+<circle cx="390" cy="157" r="5" fill="#C4882A"/>
+<circle cx="400" cy="160" r="5" fill="#C4882A"/>
+<circle cx="410" cy="157" r="5" fill="#C4882A"/>
+
+</svg>

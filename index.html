@@ -521,6 +521,7 @@
       padding: 32px;
       text-align: center;
       pointer-events: none;
+      will-change: opacity;
     }
 
     .scroll-quote {
@@ -815,9 +816,10 @@
   var frames       = new Array(FRAME_COUNT);
   var currentFrame = 0;
   var currentCircleR = 0;
+  var cachedMedR   = 0; /* cached once on resize, not recalculated per scroll tick */
 
   var canvas      = document.getElementById('frame-canvas');
-  var ctx         = canvas.getContext('2d');
+  var ctx         = canvas.getContext('2d', { alpha: false }); /* opaque — faster compositing on iOS */
   var overlay     = document.getElementById('load-overlay');
   var bar         = document.getElementById('load-bar');
   var pctEl       = document.getElementById('load-pct');
@@ -828,34 +830,33 @@
   function clamp01(v) { return Math.min(1, Math.max(0, v)); }
   function invlerp(a, b, v) { return clamp01((v - a) / (b - a)); }
 
-  function medallionR() {
-    return Math.min(canvas.width, canvas.height) * 0.40;
-  }
-
   function render() {
     var cw = canvas.width, ch = canvas.height;
-    var mR = medallionR();
-    var circleR = Math.min(currentCircleR, mR);
-    ctx.clearRect(0, 0, cw, ch);
+    var circleR = Math.min(currentCircleR, cachedMedR);
 
-    /* draw video frame unclipped — cream overlay will mask outside the hole */
+    /* 1. Fill entire canvas with cream (canvas is opaque, no clearRect needed) */
+    ctx.fillStyle = '#FBF5EC';
+    ctx.fillRect(0, 0, cw, ch);
+
+    /* 2. Clip to the medallion circle, draw video frame only within it.
+          This avoids drawing the full image + masking — GPU only processes circle pixels. */
     var img = frames[currentFrame];
-    if (img && currentCircleR > 0) {
-      var scale = Math.max(mR * 2 / img.naturalWidth, mR * 2 / img.naturalHeight);
+    if (img && circleR > 0) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cw / 2, ch / 2, circleR, 0, Math.PI * 2);
+      ctx.clip();
+      var scale = Math.max(cachedMedR * 2 / img.naturalWidth, cachedMedR * 2 / img.naturalHeight);
       var w = img.naturalWidth  * scale;
       var h = img.naturalHeight * scale;
       ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
+      ctx.restore();
     }
-
-    /* cream overlay with circular hole — evenodd masks frame outside circle */
-    ctx.beginPath();
-    ctx.rect(0, 0, cw, ch);
-    if (currentCircleR > 0) {
-      ctx.arc(cw / 2, ch / 2, circleR, 0, Math.PI * 2, true);
-    }
-    ctx.fillStyle = '#FBF5EC';
-    ctx.fill('evenodd');
   }
+
+  /* Pending values — set in onUpdate, applied inside RAF to batch DOM mutations */
+  var pendingTextOpacity = 1;
+  var pendingBandT       = 0;
 
   /* On touch devices cap DPR at 1 — 3x retina canvas is ~9x the pixel count */
   var isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
@@ -864,7 +865,8 @@
   function syncCanvasSize() {
     canvas.width  = canvas.offsetWidth  * dpr;
     canvas.height = canvas.offsetHeight * dpr;
-    render(); /* ctx.scale не нужен — medallionR/render оперирует canvas.width/height напрямую */
+    cachedMedR    = Math.min(canvas.width, canvas.height) * 0.40;
+    render();
   }
 
   var rafPending = false;
@@ -873,6 +875,10 @@
     rafPending = true;
     requestAnimationFrame(function () {
       rafPending = false;
+      /* Batch all DOM style mutations + canvas draw in one RAF — avoids mid-frame layout */
+      textEl.style.opacity = pendingTextOpacity;
+      ornBandTop.style.transform = 'translate3d(' + ((pendingBandT - 1) * 101) + '%,0,0)';
+      ornBandBot.style.transform = 'translate3d(' + ((1 - pendingBandT) * 101) + '%,0,0)';
       render();
     });
   }
@@ -915,22 +921,15 @@
       onUpdate: function (self) {
         var p = self.progress;
 
-        /* Phase 1 (0–0.15):  text fully visible, cream bg */
-        /* Phase 2 (0.15–0.30): text fades out             */
-        textEl.style.opacity = 1 - invlerp(0.15, 0.30, p);
+        /* Store pending values — DOM mutations happen inside RAF */
+        pendingTextOpacity = 1 - invlerp(0.15, 0.30, p);
+        pendingBandT       = invlerp(0.25, 0.58, p);
 
-        /* Phase 3 (0.25–0.50): medallion circle grows     */
-        var holeT = invlerp(0.25, 0.50, p);
-        currentCircleR = holeT * medallionR();
+        /* Phase 3 (0.25–0.50): medallion circle grows */
+        currentCircleR = invlerp(0.25, 0.50, p) * cachedMedR;
 
-        /* Ornamental bands slide in from sides with the circle */
-        var bandT = invlerp(0.25, 0.58, p);
-        ornBandTop.style.transform = 'translate3d(' + ((bandT - 1) * 101) + '%,0,0)';
-        ornBandBot.style.transform = 'translate3d(' + ((1 - bandT) * 101) + '%,0,0)';
-
-        /* Frames progress from 0.35 → 1.0                */
-        var frameT   = invlerp(0.35, 1.0, p);
-        currentFrame = Math.round(frameT * (FRAME_COUNT - 1));
+        /* Frames progress from 0.35 → 1.0 */
+        currentFrame = Math.round(invlerp(0.35, 1.0, p) * (FRAME_COUNT - 1));
 
         scheduleRender();
       }

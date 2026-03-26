@@ -6,7 +6,7 @@
   <title>Свадьба Александра и Анны</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Monomakh+Unicode&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <style>
@@ -129,26 +129,26 @@
     }
 
     .hero-title {
-      font-family: 'Reznovic', 'Philosopher', serif;
+      font-family: 'Monomakh Unicode', serif;
       font-weight: 700;
       color: #fff;
       line-height: 1.15;
       text-shadow: 0 2px 12px rgba(0,0,0,0.3);
     }
     .hero-title .line1 {
-      font-size: 100px;
+      font-size: 48px;
       letter-spacing: 8px;
       display: block;
       color: var(--light);
       margin-bottom: 0;
     }
     .hero-title .line2 {
-      font-size: 62px;
+      font-size: 32px;
       letter-spacing: 2px;
       display: block;
     }
     .hero-title .line3 {
-      font-size: 30px;
+      font-size: 16px;
       letter-spacing: 4px;
       display: block;
       color: var(--light);
@@ -156,7 +156,7 @@
       font-weight: 600;
     }
     .hero-title .line4 {
-      font-size: 62px;
+      font-size: 32px;
       letter-spacing: 2px;
       display: block;
     }
@@ -192,9 +192,9 @@
     }
 
     .section-title {
-      font-family: 'Reznovic', 'Philosopher', serif;
+      font-family: 'Monomakh Unicode', serif;
       font-weight: 700;
-      font-size: 56px;
+      font-size: 44px;
       color: var(--red);
       text-align: center;
       letter-spacing: 3px;
@@ -220,7 +220,7 @@
     .timeline-item:last-child { border-bottom: none; }
 
     .tl-time {
-      font-family: 'Philosopher', serif;
+      font-family: 'Monomakh Unicode', serif;
       font-weight: 700;
       font-size: 17px;
       color: var(--red);
@@ -272,10 +272,10 @@
     }
 
     .swatches {
-      display: flex;
+      display: grid;
+      grid-template-columns: repeat(3, 48px);
       justify-content: center;
       gap: 12px;
-      flex-wrap: wrap;
     }
 
     .swatch {
@@ -330,7 +330,7 @@
       gap: 5px;
     }
     .form-group label {
-      font-family: 'Philosopher', serif;
+      font-family: 'Monomakh Unicode', serif;
       font-size: 12px;
       letter-spacing: 2px;
       color: var(--red);
@@ -373,7 +373,7 @@
     }
 
     .rsvp-btn {
-      font-family: 'Philosopher', serif;
+      font-family: 'Monomakh Unicode', serif;
       font-size: 16px;
       letter-spacing: 4px;
       color: var(--cream);
@@ -434,7 +434,7 @@
       display: block;
     }
     .rsvp-success-title {
-      font-family: 'Reznovic', 'Philosopher', serif;
+      font-family: 'Monomakh Unicode', serif;
       font-weight: 700;
       font-size: 56px;
       letter-spacing: 3px;
@@ -477,7 +477,7 @@
     }
 
     .contact-name {
-      font-family: 'Philosopher', serif;
+      font-family: 'Monomakh Unicode', serif;
       font-weight: 700;
       font-size: 17px;
       letter-spacing: 1px;
@@ -573,7 +573,7 @@
     .scroll-quote {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: 22px;
+      font-size: 28px;
       color: var(--red);
       line-height: 1.55;
       margin-bottom: 16px;
@@ -590,7 +590,7 @@
     .scroll-sub {
       font-family: 'PT Serif', serif;
       color: var(--dark);
-      font-size: 15px;
+      font-size: 18px;
       line-height: 1.75;
       opacity: 0.8;
     }
@@ -630,7 +630,7 @@
     }
 
     #load-label {
-      font-family: 'Philosopher', serif;
+      font-family: 'Monomakh Unicode', serif;
       font-size: 15px;
       letter-spacing: 5px;
       text-transform: uppercase;
@@ -639,7 +639,7 @@
     }
 
     #load-pct {
-      font-family: 'Philosopher', serif;
+      font-family: 'Monomakh Unicode', serif;
       font-size: 13px;
       letter-spacing: 3px;
       color: var(--cream);
@@ -749,11 +749,12 @@
       </p>
 
       <div class="swatches">
-        <div class="swatch" style="background:#8B1A1A;" title="Бордовый"></div>
-        <div class="swatch" style="background:#2C1810;" title="Тёмный"></div>
-        <div class="swatch" style="background:#F5EBD8; border-color:rgba(139,26,26,0.3);" title="Льняной"></div>
-        <div class="swatch" style="background:#C4882A;" title="Золотой"></div>
-        <div class="swatch" style="background:#7A6040;" title="Тёплый коричневый"></div>
+        <div class="swatch" style="background:#eddbce;"></div>
+        <div class="swatch" style="background:#bfa38e;"></div>
+        <div class="swatch" style="background:#57463a;"></div>
+        <div class="swatch" style="background:#be7646;"></div>
+        <div class="swatch" style="background:#9a1a15;"></div>
+        <div class="swatch" style="background:#571715;"></div>
       </div>
     </div>
   </section>
@@ -789,32 +790,7 @@
         Дабы знали мы, кому хлеб-соль<br/>да место за столом готовить
       </p>
 
-      <form class="rsvp-form" id="rsvpForm" novalidate>
-        <div class="form-group" id="fg-name">
-          <label>Ваше имя</label>
-          <input type="text" id="rsvp-name" placeholder="Имя и фамилия" />
-          <span class="field-error">Пожалуйста, укажите ваше имя</span>
-        </div>
-
-        <div class="form-group" id="fg-attendance">
-          <label>Присутствие</label>
-          <div class="select-wrap">
-            <select id="rsvp-attendance">
-              <option value="">— выберите —</option>
-              <option value="yes">Приду</option>
-              <option value="no">Не смогу прийти</option>
-            </select>
-          </div>
-          <span class="field-error">Пожалуйста, выберите вариант</span>
-        </div>
-
-        <div class="form-group">
-          <label>Спутник (необязательно)</label>
-          <input type="text" id="rsvp-companion" placeholder="Имя спутника" />
-        </div>
-
-        <button type="submit" class="rsvp-btn">✦ Отозваться ✦</button>
-      </form>
+      <form class="rsvp-form" id="rsvpForm" novalidate style="display:none;">
 
       <div class="rsvp-success" id="rsvpSuccess">
         <span class="rsvp-success-icon">❦</span>
